@@ -22,7 +22,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <GNB />
-        {children}
+        <main className="pt-[60px]">{children}</main>
       </body>
     </html>
   );
