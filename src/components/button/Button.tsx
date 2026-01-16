@@ -1,6 +1,14 @@
 "use client";
 
-import { variantStyles, shapeStyles, sizeStyles, fabSizeStyles, iconSizes } from "./styles";
+import {
+  variantStyles,
+  shapeStyles,
+  sizeStyles,
+  fabSizeStyles,
+  boxSizeStyles,
+  iconSizes,
+  iconOnlySizes,
+} from "./styles";
 import { forwardRef } from "react";
 import { Icons } from "@/components/icons";
 import { ButtonProps } from "./Button.type";
@@ -21,8 +29,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    // FAB일 경우 iconOnly 강제
-    const isIconOnly = shape === "fab" || iconOnly;
+    // FAB 또는 box일 경우 iconOnly 강제
+    const isIconOnly = shape === "fab" || shape === "box" || iconOnly;
 
     // 아이콘 색상 결정 (variant에 따라)
     const getIconName = () => {
@@ -31,7 +39,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       // plus 아이콘의 경우 variant에 따라 색상 변경
       if (icon === "plus-white" || icon === "plus-gray") {
         if (variant === "default") return "plus-gray";
-        if (variant === "fab-light") return "plus-gray";
+        if (variant === "fab-light" || variant === "box-light") return "plus-gray";
         return "plus-white";
       }
 
@@ -39,7 +47,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const iconName = getIconName();
-    const iconElement = iconName ? <Icons name={iconName} size={iconSizes[size]} /> : null;
+    // FAB/box는 16px, 일반 버튼은 24px
+    const iconSize = shape === "fab" || shape === "box" ? iconOnlySizes[size] : iconSizes[size];
+    const iconElement = iconName ? <Icons name={iconName} size={iconSize} /> : null;
 
     return (
       <button
@@ -55,7 +65,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           // Shape 스타일
           shapeStyles[shape],
           // Size 스타일
-          shape === "fab" ? fabSizeStyles[size] : sizeStyles[size],
+          shape === "fab"
+            ? fabSizeStyles[size]
+            : shape === "box"
+              ? boxSizeStyles[size]
+              : sizeStyles[size],
           // 추가 클래스
           className
         )}

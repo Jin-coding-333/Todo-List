@@ -15,9 +15,12 @@ export const variantStyles: Record<ButtonVariant, string> = {
   violet:
     "bg-violet-600 border-2 border-slate-900 text-white shadow-[4px_4px_0_0_#0f172a] hover:bg-violet-700",
   navy: "bg-slate-900 border-2 border-slate-900 text-white shadow-[4px_4px_0_0_#334155] hover:bg-slate-800",
-  // FAB 전용 variant(그림자 없음)
+  // FAB 전용 variant (그림자 없음)
   "fab-light": "bg-slate-200 border-2 border-slate-900 text-slate-500 hover:bg-slate-300",
   "fab-dark": "bg-slate-900/50 border-2 border-slate-900 text-white hover:bg-slate-900/60",
+  // Box 전용 variant (그림자 있음)
+  "box-light":
+    "bg-slate-200 border-2 border-slate-900 text-slate-500 shadow-[4px_4px_0_0_#0f172a] hover:bg-slate-300",
 };
 
 /**
@@ -26,6 +29,7 @@ export const variantStyles: Record<ButtonVariant, string> = {
 export const shapeStyles: Record<ButtonShape, string> = {
   default: "rounded-full",
   fab: "rounded-full aspect-square",
+  box: "rounded-3xl",
 };
 
 /**
@@ -47,9 +51,26 @@ export const fabSizeStyles: Record<ButtonSize, string> = {
 };
 
 /**
- * Size별 아이콘 크기 매핑
+ * Size별 스타일 매핑 (box shape)
+ * - 55 × 52 둥근 사각형
+ */
+export const boxSizeStyles: Record<ButtonSize, string> = {
+  sm: "w-14 h-[52px]",
+  lg: "w-14 h-[52px]",
+};
+
+/**
+ * Size별 아이콘 크기 매핑 (텍스트 버튼용)
  */
 export const iconSizes: Record<ButtonSize, number> = {
-  sm: 24,
-  lg: 24,
+  sm: 16,
+  lg: 16,
+};
+
+/**
+ * Size별 아이콘 크기 매핑 (아이콘만 있는 버튼: FAB, box)
+ */
+export const iconOnlySizes: Record<ButtonSize, number> = {
+  sm: 16,
+  lg: 16,
 };

@@ -7,8 +7,9 @@ import { IconName } from "@/components/icons";
  * - primary: 연두색 배경
  * - violet: 보라색 배경
  * - navy: 짙은 남색 배경
- * - fab-light: FAB용 밝은 회색 (#E2E8F0)
- * - fab-dark: FAB용 어두운 색 (#0F172A/50)
+ * - fab-light: FAB용 밝은 회색 (그림자 없음)
+ * - fab-dark: FAB용 어두운 색 (그림자 없음)
+ * - box-light: Box용 밝은 회색 (그림자 있음)
  */
 export type ButtonVariant =
   | "default"
@@ -17,14 +18,16 @@ export type ButtonVariant =
   | "violet"
   | "navy"
   | "fab-light"
-  | "fab-dark";
+  | "fab-dark"
+  | "box-light";
 
 /**
  * 버튼 형태 타입
  * - default: 일반 버튼 (rounded-full)
  * - fab: 플로팅 액션 버튼 (원형, 아이콘만)
+ * - box: 둥근 사각형 버튼 (Search 옆 추가하기 버튼)
  */
-export type ButtonShape = "default" | "fab";
+export type ButtonShape = "default" | "fab" | "box";
 
 /**
  * 버튼 크기 타입
