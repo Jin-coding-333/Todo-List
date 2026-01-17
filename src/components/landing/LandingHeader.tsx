@@ -32,13 +32,6 @@ export const LandingHeader = ({ onAdd, className }: LandingHeaderProps) => {
         }}
       />
 
-      {/*
-        반응형 버튼 처리:
-        - lg 이상(Desktop): 168x56 사이즈, 텍스트 포함
-        - md: 162x56 사이즈, 텍스트 포함
-        - md 미만(Mobile): 56x56 사이즈, 아이콘만 (shape="box")
-      */}
-
       {/* Desktop/Tablet 버전 */}
       <Button
         variant={isEmpty ? "box-light" : "violet"}
