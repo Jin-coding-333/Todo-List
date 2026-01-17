@@ -11,11 +11,20 @@ export const ImageLoader = forwardRef<HTMLDivElement, ImageLoaderProps>(
   ({ src, alt = "업로드된 이미지", onFileSelect, onRemove, className, disabled = false }, ref) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    // 파일 선택 클릭
+    // URL 안전 처리 (한글 깨짐 및 NFD/NFC 대응)
+    // 파일 선택 클릭 (컨테이너/이미지 클릭 시)
     const handleClick = () => {
       if (!disabled && fileInputRef.current) {
+        // 이미지가 있든 없든 클릭하면 파일 선택창 열기
         fileInputRef.current.click();
       }
+    };
+
+    // 수정 버튼(FAB) 전용 핸들러
+    const handleEditClick = (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation(); // 컨테이너의 handleClick 중복 방지
+      fileInputRef.current?.click();
     };
 
     // 파일 변경 핸들러
@@ -50,7 +59,7 @@ export const ImageLoader = forwardRef<HTMLDivElement, ImageLoaderProps>(
       >
         {src ? (
           <div className="relative h-full w-full">
-            <Image src={src} alt={alt} fill className="object-contain" />
+            <img src={src} alt={alt} className="h-full w-full object-contain" />
             {onRemove && !disabled && (
               <button
                 type="button"
@@ -83,6 +92,7 @@ export const ImageLoader = forwardRef<HTMLDivElement, ImageLoaderProps>(
             noBorder
             iconSize={20}
             disabled={disabled}
+            onClick={handleEditClick}
             className={cn("h-12 w-12", !src && "bg-slate-200")}
           />
         </div>
