@@ -34,7 +34,7 @@ export const ImageLoader = forwardRef<HTMLDivElement, ImageLoaderProps>(
         onClick={handleClick}
         className={cn(
           "group relative",
-          "h-[311px] w-[384px]",
+          "h-[311px] w-full lg:w-[384px]",
           "rounded-3xl bg-slate-50 transition-colors duration-200",
           !disabled && "cursor-pointer hover:bg-slate-100",
           "overflow-hidden",
@@ -58,7 +58,7 @@ export const ImageLoader = forwardRef<HTMLDivElement, ImageLoaderProps>(
                   e.stopPropagation();
                   onRemove();
                 }}
-                className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-slate-900/50 text-white backdrop-blur-sm transition-colors hover:bg-slate-900/70"
+                className="absolute top-4 right-4 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-slate-900/50 text-white backdrop-blur-sm transition-colors hover:bg-slate-900/70"
                 aria-label="이미지 삭제"
               >
                 <Icons name="X" size={16} />
