@@ -27,6 +27,15 @@ export const Memo = forwardRef<HTMLDivElement, MemoProps>(
 
     const value = propsValue !== undefined ? propsValue : internalValue;
 
+    // 텍스트 길이에 따라 textarea 높이 자동 조절
+    useEffect(() => {
+      const textarea = textareaRef.current;
+      if (textarea) {
+        textarea.style.height = "auto";
+        textarea.style.height = `${textarea.scrollHeight}px`;
+      }
+    }, [value]);
+
     const handleValueChange = (val: string) => {
       if (propsValue === undefined) {
         setInternalValue(val);
@@ -84,42 +93,38 @@ export const Memo = forwardRef<HTMLDivElement, MemoProps>(
           Memo
         </div>
 
-        {/* 텍스트 입력 영역 (세로 중앙 정렬 유지 및 하단 여백 확보) */}
+        {/* 텍스트 입력 영역 */}
         {/* 스크롤바를 10px 안쪽으로 들이기 위해 mr-[10px] 적용, 대칭을 위해 ml-[10px] 추가 */}
         <div
           id="memo-scroll-area"
-          className="mx-[10px] flex h-[calc(100%-48px)] flex-col items-center justify-center overflow-y-auto pb-8"
+          className="mx-[10px] mb-8 h-[calc(100%-80px)] overflow-y-auto pb-12"
         >
-          <textarea
-            ref={textareaRef}
-            value={value}
-            onChange={(e) => {
-              handleValueChange(e.target.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                // 한영 전환 시 중복 입력 방지
-                if (e.nativeEvent.isComposing) return;
-              }
-            }}
-            placeholder={placeholder}
-            disabled={disabled}
-            className={cn(
-              "w-full bg-transparent px-2", // 내부 패딩을 px-4에서 px-2로 축소하여 공간 확보
-              "text-center font-['NanumSquare'] text-[16px] leading-none font-normal text-slate-800 focus:outline-none", // 타이포그래피 사양 적용
-              "resize-none overflow-visible placeholder:text-slate-400"
-            )}
-            style={{
-              lineHeight: "32px", // 줄선 간격은 32px 유지
-              height: "auto",
-              maxHeight: "100%",
-            }}
-            onInput={(e) => {
-              const target = e.target as HTMLTextAreaElement;
-              target.style.height = "auto";
-              target.style.height = `${target.scrollHeight}px`;
-            }}
-          />
+          <div className="flex min-h-full items-center justify-center pt-14 pb-4">
+            <textarea
+              ref={textareaRef}
+              value={value}
+              onChange={(e) => {
+                handleValueChange(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  // 한영 전환 시 중복 입력 방지
+                  if (e.nativeEvent.isComposing) return;
+                }
+              }}
+              placeholder={placeholder}
+              disabled={disabled}
+              className={cn(
+                "w-full bg-transparent px-2",
+                "text-center font-['NanumSquare'] text-[16px] leading-none font-normal text-slate-800 focus:outline-none", // 타이포그래피 사양 적용
+                "resize-none overflow-hidden placeholder:text-slate-400"
+              )}
+              style={{
+                lineHeight: "32px", // 줄선 간격은 32px 유지
+                minHeight: "32px",
+              }}
+            />
+          </div>
         </div>
       </div>
     );
