@@ -14,7 +14,7 @@ export const ItemDetailFooter = ({
     <div className={cn("flex items-center justify-center gap-4 py-6 lg:justify-end", className)}>
       <Button
         variant={isSaveDisabled ? "box-light" : "primary"}
-        icon={isSaveDisabled ? "check" : "check"} // Primary variant might have a different icon color, but both use 'check'
+        icon={isSaveDisabled ? "check" : "check"}
         onClick={onSave}
         className="min-w-[168px]"
         disabled={isSaveDisabled}
