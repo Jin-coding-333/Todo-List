@@ -1,5 +1,5 @@
-import { axiosInstance } from "./axiosInstance";
-import { TodoItem, CreateTodoRequest, UpdateTodoRequest, ImageUploadResponse } from "@/types/todo";
+import { axiosInstance } from "@/lib/axios";
+import { TodoItem, CreateTodoRequest, UpdateTodoRequest, ImageUploadResponse } from "./types";
 
 export const todoApi = {
   // 할 일 목록 조회
