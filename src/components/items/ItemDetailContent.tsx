@@ -22,11 +22,7 @@ export const ItemDetailContent = ({
 
       {/* 메모 섹션 */}
       <div className="w-full lg:w-auto lg:flex-shrink-0">
-        <Memo
-          value={memo}
-          onChange={(val) => onMemoChange?.(val)}
-          className="h-full min-h-[300px]"
-        />
+        <Memo value={memo} onChange={(val) => onMemoChange?.(val)} />
       </div>
     </div>
   );
