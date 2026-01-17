@@ -1,40 +1,60 @@
 "use client";
 
-import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useParams, useRouter, notFound } from "next/navigation";
 import { ItemDetailHeader } from "@/components/items/ItemDetailHeader";
 import { ItemDetailContent } from "@/components/items/ItemDetailContent";
 import { ItemDetailFooter } from "@/components/items/ItemDetailFooter";
+import { useTodoDetail, useUpdateTodo, useDeleteTodo, useUploadImage } from "@/hooks/useTodo";
+import Loading from "@/app/loading";
 
 export default function ItemDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const itemId = params.itemId as string;
 
-  // 데모용 초기 데이터
-  const DEFAULT_ITEM = {
-    id: params.itemId as string,
-    title: "비타민 챙겨 먹기",
+  const { data: serverItem, isLoading } = useTodoDetail(itemId);
+  const { mutateAsync: updateTodo } = useUpdateTodo();
+  const { mutateAsync: deleteTodo } = useDeleteTodo();
+  const { mutateAsync: uploadImage } = useUploadImage();
+
+  // 사용자가 수정 중인 상태
+  const [item, setItem] = useState({
+    title: "",
     isCompleted: false,
     imageUrl: null as string | null,
-    memo: "매일 아침 식사 후에 챙겨 먹기!",
-  };
+    memo: "",
+  });
 
-  const [item, setItem] = useState(DEFAULT_ITEM);
-  // 저장된 기준 상태 (저장 버튼 활성화 여부 판단용)
-  const [savedItem, setSavedItem] = useState(DEFAULT_ITEM);
+  // 새 이미지 파일 저장용
+  const [newImageFile, setNewImageFile] = useState<File | null>(null);
 
-  // 변경 여부 확인 (마지막으로 '저장'된 상태와 비교)
+  // 데이터 로드 시 로컬 상태 초기화
+  useEffect(() => {
+    if (serverItem) {
+      setItem({
+        title: serverItem.name,
+        isCompleted: serverItem.isCompleted,
+        imageUrl: serverItem.imageUrl || null,
+        memo: serverItem.memo || "",
+      });
+    }
+  }, [serverItem]);
+
+  // 변경 여부 확인
   const isChanged =
-    item.title !== savedItem.title ||
-    item.isCompleted !== savedItem.isCompleted ||
-    item.imageUrl !== savedItem.imageUrl ||
-    item.memo !== savedItem.memo;
+    serverItem &&
+    (item.title !== serverItem.name ||
+      item.isCompleted !== serverItem.isCompleted ||
+      item.imageUrl !== (serverItem.imageUrl || null) ||
+      item.memo !== (serverItem.memo || ""));
 
   const handleToggle = () => {
     setItem((prev) => ({ ...prev, isCompleted: !prev.isCompleted }));
   };
 
   const handleImageSelect = (file: File) => {
+    setNewImageFile(file);
     const reader = new FileReader();
     reader.onloadend = () => {
       setItem((prev) => ({ ...prev, imageUrl: reader.result as string }));
@@ -43,6 +63,7 @@ export default function ItemDetailPage() {
   };
 
   const handleImageRemove = () => {
+    setNewImageFile(null);
     setItem((prev) => ({ ...prev, imageUrl: null }));
   };
 
@@ -50,26 +71,59 @@ export default function ItemDetailPage() {
     setItem((prev) => ({ ...prev, memo: value }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!isChanged) return;
 
-    // 현재 상태를 '저장된 상태'로 업데이트
-    setSavedItem(item);
-    alert("수정 내용이 저장되었습니다!");
-    // router.push("/") 를 제거하여 현재 페이지에 유지
-  };
+    try {
+      let finalImageUrl = item.imageUrl;
 
-  const handleDelete = () => {
-    if (confirm("정말 삭제하시겠습니까?")) {
-      alert("삭제되었습니다!");
+      // 새 이미지가 있으면 업로드 먼저 진행
+      if (newImageFile) {
+        const { url } = await uploadImage(newImageFile);
+        finalImageUrl = url;
+      }
+
+      await updateTodo({
+        itemId,
+        payload: {
+          name: item.title,
+          isCompleted: item.isCompleted,
+          memo: item.memo,
+          imageUrl: finalImageUrl || undefined,
+        },
+      });
+
+      setNewImageFile(null);
+      alert("수정 내용이 저장되었습니다!");
       router.push("/");
+    } catch (error) {
+      alert("저장에 실패했습니다.");
     }
   };
+
+  const handleDelete = async () => {
+    if (confirm("정말 삭제하시겠습니까?")) {
+      try {
+        await deleteTodo(itemId);
+        alert("삭제되었습니다!");
+        router.push("/");
+      } catch (error) {
+        alert("삭제에 실패했습니다.");
+      }
+    }
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!serverItem) {
+    notFound();
+  }
 
   return (
     <div className="min-h-screen bg-white">
       <div className="mx-auto max-w-[996px] px-4 py-6 md:px-6 md:py-10 lg:px-0">
-        {/* 상단 제목 및 상태 */}
         <ItemDetailHeader
           title={item.title}
           isCompleted={item.isCompleted}
@@ -77,7 +131,6 @@ export default function ItemDetailPage() {
           className="mb-6"
         />
 
-        {/* 메인 콘텐츠 (이미지 + 메모) */}
         <ItemDetailContent
           imageUrl={item.imageUrl}
           memo={item.memo}
@@ -87,7 +140,6 @@ export default function ItemDetailPage() {
           className="mb-6"
         />
 
-        {/* 하단 제어 버튼 */}
         <ItemDetailFooter onSave={handleSave} onDelete={handleDelete} isSaveDisabled={!isChanged} />
       </div>
     </div>
