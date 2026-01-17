@@ -7,11 +7,20 @@ import cn from "@/utils/cn";
 import { variantStyles, textStyles } from "./styles";
 
 export const CheckList = forwardRef<HTMLDivElement, CheckListProps>(
-  ({ title, isCompleted = false, variant = "default", onToggle, onClick, className }, ref) => {
+  (
+    { title, isCompleted = false, variant = "default", onToggle, onClick, onDelete, className },
+    ref
+  ) => {
     // 체크박스 클릭 핸들러
     const handleCheckboxClick = (e: React.MouseEvent) => {
       e.stopPropagation(); // 부모 onClick 방지
       onToggle?.();
+    };
+
+    // 삭제 버튼 클릭 핸들러
+    const handleRemoveClick = (e: React.MouseEvent) => {
+      e.stopPropagation(); // 부모 onClick 방지
+      onDelete?.();
     };
 
     // 전체 컨테이너 클릭 핸들러
@@ -30,10 +39,10 @@ export const CheckList = forwardRef<HTMLDivElement, CheckListProps>(
           // 기본 스타일
           "group flex cursor-pointer items-center gap-3 rounded-full transition-all duration-200",
           "border-2 border-slate-900",
+          // Variant별 스타일 (default는 높이 50px 고정)
+          variant === "default" ? "h-[50px] px-4" : "justify-center px-6 py-4",
           // 완료 상태에 따른 배경색
           isCompleted ? "bg-violet-100" : "bg-white",
-          // Variant별 스타일
-          variantStyles[variant],
           // 추가 클래스
           className
         )}
@@ -63,6 +72,18 @@ export const CheckList = forwardRef<HTMLDivElement, CheckListProps>(
         >
           {title}
         </span>
+
+        {/* 삭제 버튼 (onDelete가 있을 때만 표시) */}
+        {onDelete && (
+          <button
+            type="button"
+            onClick={handleRemoveClick}
+            className="ml-auto flex-shrink-0 cursor-pointer text-slate-400 transition-all duration-200 hover:scale-110 hover:text-slate-600 focus:outline-none active:scale-95"
+            aria-label="삭제하기"
+          >
+            <Icons name="X" size={24} />
+          </button>
+        )}
       </div>
     );
   }

@@ -19,6 +19,8 @@ export interface CheckListProps {
   onToggle?: () => void;
   /** 아이템 클릭 핸들러 (상세 페이지 이동 등) */
   onClick?: () => void;
+  /** 아이템 삭제 핸들러 */
+  onDelete?: () => void;
   /** 추가 클래스 */
   className?: string;
 }
