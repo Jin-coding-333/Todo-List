@@ -1,11 +1,13 @@
 "use client";
 
+import { useTodoDetail, useUpdateTodo, useDeleteTodo, useUploadImage } from "@/hooks/useTodo";
 import { useState, useEffect } from "react";
 import { useParams, useRouter, notFound } from "next/navigation";
 import { ItemDetailHeader } from "@/components/items/ItemDetailHeader";
 import { ItemDetailContent } from "@/components/items/ItemDetailContent";
 import { ItemDetailFooter } from "@/components/items/ItemDetailFooter";
-import { useTodoDetail, useUpdateTodo, useDeleteTodo, useUploadImage } from "@/hooks/useTodo";
+import { useToast } from "@/providers/ToastProvider";
+import { useConfirm } from "@/providers/ConfirmProvider";
 import Loading from "@/app/loading";
 
 export default function ItemDetailPage() {
@@ -17,6 +19,9 @@ export default function ItemDetailPage() {
   const { mutateAsync: updateTodo } = useUpdateTodo();
   const { mutateAsync: deleteTodo } = useDeleteTodo();
   const { mutateAsync: uploadImage } = useUploadImage();
+
+  const { showToast } = useToast();
+  const { showConfirm } = useConfirm();
 
   // 사용자가 수정 중인 상태
   const [item, setItem] = useState({
@@ -74,6 +79,16 @@ export default function ItemDetailPage() {
   const handleSave = async () => {
     if (!isChanged) return;
 
+    const confirmed = await showConfirm({
+      title: "저장 확인",
+      message: "수정된 내용을 저장하시겠습니까?",
+      confirmText: "저장",
+      cancelText: "취소",
+      confirmVariant: "primary", // 연두색 버튼
+    });
+
+    if (!confirmed) return;
+
     try {
       let finalImageUrl = item.imageUrl;
 
@@ -94,21 +109,30 @@ export default function ItemDetailPage() {
       });
 
       setNewImageFile(null);
-      alert("수정 내용이 저장되었습니다!");
-      router.push("/");
-    } catch (error) {
-      alert("저장에 실패했습니다.");
+      showToast("수정 내용이 저장되었습니다!", "success");
+      // 토스트가 보이도록 잠시 후 페이지 이동
+      setTimeout(() => router.push("/"), 1000);
+    } catch {
+      showToast("저장에 실패했습니다.", "error");
     }
   };
 
   const handleDelete = async () => {
-    if (confirm("정말 삭제하시겠습니까?")) {
+    const confirmed = await showConfirm({
+      title: "삭제 확인",
+      message: "정말 삭제하시겠습니까?",
+      confirmText: "삭제",
+      cancelText: "취소",
+    });
+
+    if (confirmed) {
       try {
         await deleteTodo(itemId);
-        alert("삭제되었습니다!");
-        router.push("/");
-      } catch (error) {
-        alert("삭제에 실패했습니다.");
+        showToast("삭제되었습니다!", "success");
+        // 토스트가 보이도록 잠시 후 페이지 이동
+        setTimeout(() => router.push("/"), 1000);
+      } catch {
+        showToast("삭제에 실패했습니다.", "error");
       }
     }
   };

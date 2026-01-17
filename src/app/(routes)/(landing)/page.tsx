@@ -4,13 +4,18 @@ import { LandingHeader } from "@/components/landing/LandingHeader";
 import { TodoSection } from "@/components/landing/TodoSection";
 import { DoneSection } from "@/components/landing/DoneSection";
 import { useTodos, useCreateTodo, useUpdateTodo, useDeleteTodo } from "@/hooks/useTodo";
+import { useToast } from "@/providers/ToastProvider";
+import { useConfirm } from "@/providers/ConfirmProvider";
 import Loading from "@/app/loading";
 
 export default function Home() {
   const { data: todos = [], isLoading } = useTodos();
   const { mutate: createTodo } = useCreateTodo();
   const { mutate: updateTodo } = useUpdateTodo();
-  const { mutate: deleteTodo } = useDeleteTodo();
+  const { mutateAsync: deleteTodo } = useDeleteTodo();
+
+  const { showToast } = useToast();
+  const { showConfirm } = useConfirm();
 
   const todoItems = todos.filter((item) => !item.isCompleted);
   const doneItems = todos.filter((item) => item.isCompleted);
@@ -26,9 +31,21 @@ export default function Home() {
     createTodo({ name: title });
   };
 
-  const handleDelete = (id: string | number) => {
-    if (confirm("정말 삭제하시겠습니까?")) {
-      deleteTodo(id);
+  const handleDelete = async (id: string | number) => {
+    const confirmed = await showConfirm({
+      title: "삭제 확인",
+      message: "정말 삭제하시겠습니까?",
+      confirmText: "삭제",
+      cancelText: "취소",
+    });
+
+    if (confirmed) {
+      try {
+        await deleteTodo(id);
+        showToast("삭제되었습니다!", "success");
+      } catch {
+        showToast("삭제에 실패했습니다.", "error");
+      }
     }
   };
 
