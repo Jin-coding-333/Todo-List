@@ -35,8 +35,8 @@ export const todoApi = {
   // 이미지 업로드
   uploadImage: async (imageFile: File) => {
     const formData = new FormData();
-    // 파일명에 한글이나 특수문자가 포함되면 S3 인코딩 문제로 403 에러가 발생할 수 있습니다.
-    // 이를 방지하기 위해 파일명을 안전한 영문/숫자 조합으로 변경하여 업로드합니다.
+    // 파일명에 한글이나 특수문자가 포함되면 S3 인코딩 문제로 403 에러 발생
+    // 이를 방지하기 위해 파일명을 안전한 영문/숫자 조합으로 변경하여 업로드
     const extension = imageFile.name.split(".").pop();
     const safeFileName = `image_${Date.now()}.${extension}`;
     const safeFile = new File([imageFile], safeFileName, {
