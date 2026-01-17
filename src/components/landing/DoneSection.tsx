@@ -6,7 +6,7 @@ import { CheckList } from "@/components/checkList";
 import cn from "@/utils/cn";
 import { DoneSectionProps } from "./landing.type";
 
-export const DoneSection = ({ items = [], onToggle, className }: DoneSectionProps) => {
+export const DoneSection = ({ items = [], onToggle, onDelete, className }: DoneSectionProps) => {
   const router = useRouter();
   const isEmpty = items.length === 0;
 
@@ -38,10 +38,11 @@ export const DoneSection = ({ items = [], onToggle, className }: DoneSectionProp
           items.map((item) => (
             <CheckList
               key={item.id}
-              title={item.title}
-              isCompleted={true}
+              title={item.name}
+              isCompleted={item.isCompleted}
               onToggle={() => onToggle?.(item.id)}
               onClick={() => router.push(`/items/${item.id}`)}
+              onDelete={() => onDelete?.(item.id)}
             />
           ))
         )}
