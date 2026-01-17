@@ -47,6 +47,10 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   icon?: IconName;
   /** 아이콘만 표시 (children 무시) */
   iconOnly?: boolean;
+  /** 테두리 제거 여부 */
+  noBorder?: boolean;
+  /** 아이콘 크기 직접 지정 */
+  iconSize?: number;
   /** 자식 요소 */
   children?: React.ReactNode;
 }
