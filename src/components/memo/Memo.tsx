@@ -2,7 +2,7 @@
 
 import { forwardRef, useState, useEffect, useRef } from "react";
 import { MemoProps } from "./Memo.type";
-import cn from "@/lib/cn";
+import cn from "@/utils/cn";
 
 export const Memo = forwardRef<HTMLDivElement, MemoProps>(
   (

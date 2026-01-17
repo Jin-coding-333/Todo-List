@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ImageLoaderProps } from "./ImageLoader.type";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/button";
-import cn from "@/lib/cn";
+import cn from "@/utils/cn";
 
 export const ImageLoader = forwardRef<HTMLDivElement, ImageLoaderProps>(
   ({ src, alt = "업로드된 이미지", onFileSelect, onRemove, className, disabled = false }, ref) => {

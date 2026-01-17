@@ -3,7 +3,7 @@
 import { forwardRef } from "react";
 import { CheckListProps } from "./CheckList.type";
 import { Icons } from "@/components/icons";
-import cn from "@/lib/cn";
+import cn from "@/utils/cn";
 import { variantStyles, textStyles } from "./styles";
 
 export const CheckList = forwardRef<HTMLDivElement, CheckListProps>(

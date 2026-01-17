@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 import { SearchProps } from "./Search.type";
-import cn from "@/lib/cn";
+import cn from "@/utils/cn";
 
 export const Search = forwardRef<HTMLInputElement, SearchProps>(
   ({ value, onChange, placeholder = "할 일을 입력해주세요", className, ...props }, ref) => {

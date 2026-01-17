@@ -12,7 +12,7 @@ import {
 import { forwardRef } from "react";
 import { Icons } from "@/components/icons";
 import { ButtonProps } from "./Button.type";
-import cn from "@/lib/cn";
+import cn from "@/utils/cn";
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
