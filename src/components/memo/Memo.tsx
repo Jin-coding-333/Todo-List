@@ -4,6 +4,7 @@ import { forwardRef, useState, useEffect, useRef } from "react";
 import { MemoProps } from "./Memo.type";
 import cn from "@/utils/cn";
 
+// 노트패드 스타일의 메모 컴포넌트: 줄무늬 배경 및 자동 높이 조절 Textarea 제공
 export const Memo = forwardRef<HTMLDivElement, MemoProps>(
   (
     {

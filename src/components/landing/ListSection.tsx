@@ -8,6 +8,8 @@ import { ListSectionProps } from "./landing.type";
 
 import { SECTION_CONFIG } from "@/constants/landing";
 
+// 할 일 목록(Todo/Done)을 보여주는 섹션 컴포넌트
+// 비어있을 경우 Empty State 이미지를 보여주고, 목록이 있을 경우 CheckList 컴포넌트를 렌더링
 export const ListSection = ({
   type,
   items = [],

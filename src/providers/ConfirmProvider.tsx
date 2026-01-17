@@ -29,7 +29,7 @@ export function useConfirm() {
   return context;
 }
 
-// Confirm 프로바이더
+// 전역에서 확인 모달(Confirm)을 띄우기 위한 Context Provider
 export function ConfirmProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [options, setOptions] = useState<ConfirmOptions | null>(null);

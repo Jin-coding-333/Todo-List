@@ -10,6 +10,7 @@ import { useToast } from "@/providers/ToastProvider";
 import { useConfirm } from "@/providers/ConfirmProvider";
 import Loading from "@/app/loading";
 
+// 할 일 상세 페이지: 할 일 수정, 삭제, 이미지 업로드
 export default function ItemDetailPage() {
   const params = useParams();
   const router = useRouter();

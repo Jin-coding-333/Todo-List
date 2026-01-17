@@ -27,7 +27,7 @@ export function useToast() {
   return context;
 }
 
-// Toast 프로바이더
+// 전역에서 토스트 알림을 띄우기 위한 Context Provider
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 

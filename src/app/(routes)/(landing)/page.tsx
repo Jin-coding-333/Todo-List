@@ -8,6 +8,7 @@ import { useToast } from "@/providers/ToastProvider";
 import { useConfirm } from "@/providers/ConfirmProvider";
 import Loading from "@/app/loading";
 
+// 메인 랜딩 페이지: 할 일 목록 조회 및 생성
 export default function Home() {
   const { data: todos = [], isLoading } = useTodos();
   const { mutate: createTodo } = useCreateTodo();

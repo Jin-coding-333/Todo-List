@@ -8,6 +8,7 @@ import { Button } from "@/components/button";
 import cn from "@/utils/cn";
 import { LIMITS, ICON_SIZES } from "@/constants/design";
 
+// 이미지 업로드 및 미리보기 컴포넌트: 빈 상태(Placeholder)와 채워진 상태 관리
 export const ImageLoader = forwardRef<HTMLDivElement, ImageLoaderProps>(
   ({ src, alt = "업로드된 이미지", onFileSelect, onRemove, className, disabled = false }, ref) => {
     const fileInputRef = useRef<HTMLInputElement>(null);

@@ -2,10 +2,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { todoApi } from "@/api/todo";
 import { CreateTodoRequest, UpdateTodoRequest } from "@/api/todo/types";
 
+// React Query 키 팩토리: 쿼리 키를 중앙에서 관리하여 오타 방지 및 갱신 용이성 확보
 export const todoKeys = {
   all: ["todos"] as const,
-  lists: () => [...todoKeys.all, "list"] as const,
-  detail: (id: string | number) => [...todoKeys.all, "detail", id] as const,
+  lists: () => [...todoKeys.all, "list"] as const, // 전체 목록 키
+  detail: (id: string | number) => [...todoKeys.all, "detail", id] as const, // 상세 아이템 키
 };
 
 // 할 일 목록 조회 훅

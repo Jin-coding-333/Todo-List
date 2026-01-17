@@ -6,6 +6,8 @@ import { Icons } from "@/components/icons";
 import cn from "@/utils/cn";
 import { containerStyles, checkboxStyles, deleteButtonStyles, textStyles } from "./styles";
 
+// 할 일 아이템을 표시하는 체크리스트 컴포넌트
+// 체크박스, 제목, 삭제 버튼으로 구성되며 완료 상태에 따라 스타일이 변경됨
 export const CheckList = forwardRef<HTMLDivElement, CheckListProps>(
   (
     {

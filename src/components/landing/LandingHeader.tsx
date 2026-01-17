@@ -6,6 +6,7 @@ import { Button } from "@/components/button";
 import cn from "@/utils/cn";
 import { LandingHeaderProps } from "./landing.type";
 
+// 메인 화면 헤더: 검색어 입력 및 "할 일 추가" 버튼 포함
 export const LandingHeader = ({ onAdd, className }: LandingHeaderProps) => {
   const [searchValue, setSearchValue] = useState("");
 
