@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import GNB from "@/components/gnb/GNB";
 import QueryProvider from "@/providers/QueryProvider";
+import { ToastProvider } from "@/providers/ToastProvider";
+import { ConfirmProvider } from "@/providers/ConfirmProvider";
 
 export const metadata: Metadata = {
   title: "Todo List",
@@ -23,8 +25,12 @@ export default function RootLayout({
       </head>
       <body className="antialiased" suppressHydrationWarning>
         <QueryProvider>
-          <GNB />
-          <main className="pt-[60px]">{children}</main>
+          <ToastProvider>
+            <ConfirmProvider>
+              <GNB />
+              <main className="pt-[60px]">{children}</main>
+            </ConfirmProvider>
+          </ToastProvider>
         </QueryProvider>
       </body>
     </html>
