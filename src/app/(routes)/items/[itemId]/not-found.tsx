@@ -10,7 +10,7 @@ export default function ItemNotFound() {
         <div className="mb-8 animate-bounce">
           <Image
             src="/img/image_done_large.svg"
-            alt="아이템을 찾을 수 없습니다"
+            alt="할 일을 찾을 수 없습니다"
             width={240}
             height={220}
             priority
@@ -19,11 +19,11 @@ export default function ItemNotFound() {
 
         {/* Error Message */}
         <h2 className="mb-3 text-xl font-bold text-slate-700 md:text-2xl">
-          아이템을 찾을 수 없습니다
+          할 일을 찾을 수 없습니다
         </h2>
 
         <p className="mb-8 leading-relaxed text-slate-500">
-          요청하신 아이템이 존재하지 않거나,
+          요청하신 할 일이 존재하지 않거나,
           <br />
           삭제되었을 수 있습니다.
         </p>
