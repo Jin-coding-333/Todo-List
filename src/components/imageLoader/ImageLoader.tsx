@@ -6,6 +6,7 @@ import { ImageLoaderProps } from "./ImageLoader.type";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/button";
 import cn from "@/utils/cn";
+import { LIMITS, ICON_SIZES } from "@/constants/design";
 
 export const ImageLoader = forwardRef<HTMLDivElement, ImageLoaderProps>(
   ({ src, alt = "업로드된 이미지", onFileSelect, onRemove, className, disabled = false }, ref) => {
@@ -31,9 +32,9 @@ export const ImageLoader = forwardRef<HTMLDivElement, ImageLoaderProps>(
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (file) {
-        // 5MB 제한 (5 * 1024 * 1024 bytes)
-        if (file.size > 5 * 1024 * 1024) {
-          alert("파일 크기는 5MB 이하여야 합니다.");
+        // 파일 크기 제한
+        if (file.size > LIMITS.MAX_IMAGE_SIZE) {
+          alert(`파일 크기는 ${LIMITS.MAX_IMAGE_SIZE_MB}MB 이하여야 합니다.`);
           e.target.value = ""; // 초기화
           return;
         }
@@ -79,7 +80,7 @@ export const ImageLoader = forwardRef<HTMLDivElement, ImageLoaderProps>(
                 className="absolute top-4 right-4 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-slate-900/50 text-white backdrop-blur-sm transition-colors hover:bg-slate-900/70"
                 aria-label="이미지 삭제"
               >
-                <Icons name="X" size={16} />
+                <Icons name="X" size={ICON_SIZES.SM} />
               </button>
             )}
           </div>
